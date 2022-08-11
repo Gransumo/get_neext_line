@@ -14,29 +14,26 @@
 
 char	*get_next_line(int fd);
 {
-	char		*buff;
+	char		*new;
 	int			n_bytes;		// compare with BUFFER_SIZE
-	static char *stc_var;	// VARIABLE ESTATICA EN LA QUE SE GUARDARÁ EL RESTANTE DE LA LECTURA ANTERIOR. 
+	//static char *stc_var;	// VARIABLE ESTATICA EN LA QUE SE GUARDARÁ EL RESTANTE DE LA LECTURA ANTERIOR. 
 	int			control;
+	char		*buff;
 
 	control = 0;
 	buff = malloc(BUFFER_SIZE);
-	stc_var = malloc(BUFFER_SIZE);
-	n_bytes = read(fd, buff, BUFFER_SIZE);
 	while (control == 0)
 	{
-		if(find_LF(buff) == 1)
-		{
+		n_bytes = read(fd, buff, BUFFER_SIZE);
+		if(n_bytes == 0)
+			return (NULL);
+		new = ft_strjoin(new, buff);
+		if(ft_strchr(new, '\n'))
 			control = 1;
-			stc = asign_stc(buff);
-		}
-		else
-		{
-			buff = malloc(sizeof(buff) + BUFFER_SIZE);
-			n_bytes = read(fd, &buff[BUFFER_SIZE], BUFFER_SIZE);
-		}
 	}
-
+	
+	free(buff);
+	return (new);
 }
 
 int main()
