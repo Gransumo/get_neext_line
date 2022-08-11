@@ -11,31 +11,43 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*new;
 	size_t	i;
 	size_t	j;
 
-	j = 0; 
+	j = 0;
 	i = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (0);
-	new = malloc (ft_strlen (s1) + ft_strlen (s2) + 1);
+	new = malloc (ft_strlen (s1) + len_LF(s2) + 1);
 	if (new == NULL)
 		return (0);
-	while(s1[i])
+	while (s1[i])
 	{
 		new[i] = s1[i];
 		i++;
 	}
-	while(s1[j])
+	while (s2[i] && s2[j] != '\n')
 	{
 		new[i + j] = s2[j];
 		j++;
 	}
-	new[i + j] == '\0';
+	if (s2[j] == '\n')
+		new[i + j] = s2[j];
+	new[i + j + 1] == '\0';
 	return (new);
+}
+
+int	len_lf(char	*s)
+{
+	int	len;
+
+	len = 0;
+	while (s[len] != '\n')
+		len++;
+	return (len + 1);
 }
 
 char	*ft_strchr(const char *s, int c)
