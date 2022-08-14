@@ -21,7 +21,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (0);
-	new = malloc (ft_strlen (s1) + len_LF(s2) + 1);
+	new = malloc (ft_strlen (s1) + len_lf(s2) + 1);
 	if (new == NULL)
 		return (0);
 	while (s1[i])
@@ -36,16 +36,16 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	if (s2[j] == '\n')
 		new[i + j] = s2[j];
-	new[i + j + 1] == '\0';
+	new[i + j + 1] = '\0';
 	return (new);
 }
 
-int	len_lf(char	*s)
+size_t	len_lf(char	*s)
 {
-	int	len;
+	size_t	len;
 
 	len = 0;
-	while (s[len] != '\n')
+	while (s[len] != '\n' && len < BUFFER_SIZE)
 		len++;
 	return (len + 1);
 }
@@ -75,4 +75,9 @@ size_t	ft_strlen(const char *c)
 	while (c[i])
 		i++;
 	return (i);
+}
+
+int check_missing(char *new)
+{
+
 }
