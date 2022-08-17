@@ -21,4 +21,6 @@ size_t	ft_strlen(const char *c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
 size_t	len_lf(char	*s);
+char	*get_new(int fd, char *buff);
+char	*get_init_new(char *missing_text);
 #endif

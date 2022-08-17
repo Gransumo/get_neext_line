@@ -50,6 +50,27 @@ size_t	len_lf(char	*s)
 	return (len + 1);
 }
 
+char	*get_new(int fd, char *buff)
+{
+	int		control;
+	int		n_bytes;
+	char	*new;
+
+	control = 0;
+	if(buff == NULL)
+		return (NULL);
+	while (control == 0)
+	{
+		n_bytes = read(fd, buff, BUFFER_SIZE);
+		if ((n_bytes == 0 || n_bytes == -1) && new == NULL)
+			return (NULL);
+		new = ft_strjoin(new, buff);
+		if (ft_strchr (new, '\n') != NULL)
+			control = 1;
+	}	
+	return(new);
+}
+
 char	*ft_strchr(const char *s, int c)
 {
 	size_t	x;
@@ -75,9 +96,4 @@ size_t	ft_strlen(const char *c)
 	while (c[i])
 		i++;
 	return (i);
-}
-
-int check_missing(char *new)
-{
-
 }

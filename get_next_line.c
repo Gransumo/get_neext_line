@@ -11,29 +11,44 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
+char	*get_init_new(char *missing_text)
+{
+	char	*new;
+	size_t		i;
+
+	i = 0;
+	new = malloc(len_lf(missing_text)+ 1);
+	while(i < len_lf(missing_text))
+	{
+		new[i] = missing_text[i];
+		i++;
+	}
+	new[i] = '\0';
+	return (new);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*new;
-	int			n_bytes;
 	static char	*missing_text;
 	char		*buff;
-	int			control;
 
-	control = 0;
 	buff = malloc (sizeof(char) * BUFFER_SIZE);
-	if (missing_text != NULL)
-		new = missing_text;
 	if(buff == NULL)
 		return (NULL);
-	while (control == 0)
+	if (missing_text != NULL)
 	{
-		n_bytes = read(fd, buff, BUFFER_SIZE);
-		if (n_bytes == 0 || n_bytes == -1 && new == NULL)
-			return (NULL);
-		new = ft_strjoin(new, buff);
-		if (ft_strchr (new, '\n') != NULL)
-			control = 1;
+		if(ft_strchr (missing_text, '\n') != NULL)
+		{
+			new = get_init_new(missing_text);
+			missing_text = ft_strchr (missing_text, '\n');
+			free(buff);
+			return(new);
+		}
+		else
+			new = missing_text;
 	}
+	new = get_new(fd, buff);
 	missing_text = ft_strchr (buff, '\n');
 	free (buff);
 	return (new);
@@ -49,7 +64,7 @@ int main()
 /* 	nb = read(fd, buff, BUFFER_SIZE);
 	printf("%s\n%i", buff, nb); */
 	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	//printf("%s", get_next_line(fd));
 	
 	return (0);
 }
