@@ -11,20 +11,28 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-char	*get_init_new(char *missing_text)
+char	*get_init_new(char *str)
 {
-	char	*new;
-	size_t		i;
+	int i;
+	char *new;
 
 	i = 0;
-	new = malloc(len_lf(missing_text)+ 1);
-	while(i < len_lf(missing_text))
+	new = malloc(len_lf(str) + 1);
+	while(str[i] != '\n')
 	{
-		new[i] = missing_text[i];
+		new[i] = str[i];
 		i++;
 	}
-	new[i] = '\0';
+	new[i] = str[i];
+	i++;
+	new[i] = 0;
 	return (new);
+}
+
+void	ft_free(char *buff, char *aux)
+{
+	free(buff);
+	free(aux);
 }
 
 char	*get_next_line(int fd)
@@ -32,25 +40,27 @@ char	*get_next_line(int fd)
 	char		*new;
 	static char	*missing_text;
 	char		*buff;
+	char		*aux;
 
-	buff = malloc (sizeof(char) * BUFFER_SIZE);
-	if(buff == NULL)
-		return (NULL);
-	if (missing_text != NULL)
+	if(missing_text != NULL)
 	{
-		if(ft_strchr (missing_text, '\n') != NULL)
+		if(ft_strchr(missing_text, '\n'))
 		{
 			new = get_init_new(missing_text);
 			missing_text = ft_strchr (missing_text, '\n');
-			free(buff);
 			return(new);
 		}
 		else
-			new = missing_text;
+			aux = missing_text;
 	}
-	new = get_new(fd, buff);
+	buff = malloc (BUFFER_SIZE + 1);
+	aux = malloc(sizeof(char) * 1);
+	if(buff == NULL || aux == NULL)
+		return (NULL);
+	aux[0] = 0;
+	new = ft_strjoin(aux, get_line(fd, buff));
 	missing_text = ft_strchr (buff, '\n');
-	free (buff);
+	ft_free (buff, aux);
 	return (new);
 }
 
@@ -64,6 +74,7 @@ int main()
 /* 	nb = read(fd, buff, BUFFER_SIZE);
 	printf("%s\n%i", buff, nb); */
 	printf("%s", get_next_line(fd));
+	//printf("%s", get_next_line(fd));
 	//printf("%s", get_next_line(fd));
 	
 	return (0);
